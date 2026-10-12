@@ -263,7 +263,8 @@
         this._map = L.map('map', {
           zoomControl: false
         }).setView([this._latitude, this._longitude], 12);
-        L.tileLayer('//pioupiou.fr/tiles/{z}/{x}/{y}.png', {
+        // L.tileLayer('//pioupiou.fr/tiles/{z}/{x}/{y}.png',
+        L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
           attribution: '<a href="http://osm.org/copyright">OSM</a>'
         }).addTo(this._map);
         return this._marker = L.windMarker([this._latitude, this._longitude], {

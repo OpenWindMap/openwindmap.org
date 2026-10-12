@@ -12,8 +12,8 @@
   $(window).resize(resize);
 
   map = L.map('map').setView([46.5, 2], 6);
-
-  L.tileLayer('//pioupiou.fr/tiles/{z}/{x}/{y}.png', {
+  // L.tileLayer('//pioupiou.fLr/tiles/{z}/{x}/{y}.png',
+  L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(map);
 

@@ -116,7 +116,7 @@ Utilisez **Redeploy** (et pas seulement Restart) après tout changement de domai
 | `/123/edit` | sert `edit.html` (voir la remarque ci-dessous) |
 | `/description`, `/gps`, `/coop` | 302 vers le forum |
 | `/pioupiou/...` | 301 vers la catégorie du forum |
-| `/data` | 302 vers developers.pioupiou.fr |
+| `/data` | 302 vers developers.openwindmap.org |
 | `exemple.org/...` | 302 vers `www.exemple.org/...` |
 
 Les règles sont évaluées **dans l'ordre** du fichier : ne les réordonnez pas sans vérifier les plages d'identifiants.
