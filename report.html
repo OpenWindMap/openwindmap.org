@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>OpenWindMap - Live wind reports</title>
+    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="/old/style.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css">
+  </head>
+  <body>
+
+
+<!--
+
+PLEASE ACCEPT MY APOLOGIES FOR THIS HUGE MESS.
+
+THIS IS QUICK AND DIRTY RECYCLING OF A VERY OLD CODE, AND I NEVER HAD THE TIME TO FIX IT.
+        
+IF YOU WANT TO HELP, YOU CAN EMAIL CONTACT@OPENWINDMAP.ORG
+        
+-->  
+
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar" class="navbar-toggle collapsed"><span class="sr-only">toogle</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a rel="home" href="/" title="Home" class="navbar-brand">OpenWindMap</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse navbar-right">
+          <ul class="nav navbar-nav">
+            <li><a id="carte" href="/">Carte</a></li>
+            <li><a href="https://play.google.com/store/apps/details?id=org.openwindmap.app&pli=1" target="_blank"><img src="img/GetItOnGooglePlay_Badge_Web_color_French.png" height="40"></a></li>
+            <li><a href="https://windbird.com" target="_blank" style="color: red; font-weight: bold;">Acheter un capteur</a></li>
+            <!--<li><a href="https://forum.openwindmap.org/topic/160/comment-installer-un-capteur" style="color: red; font-weight: bold;">Installer un capteur</a></li>-->
+            <li><a href="https://forum.openwindmap.org/category/26/pioupiou" target="_blank">Support WindBird/Pioupiou</a></li>
+            <li><a href="http://developers.pioupiou.fr" target="_blank">Open data</a></li>
+            <li><a href="https://forum.openwindmap.org/categories" target="_blank">Forum</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container bottom-pad">
+      <a href="/">🌍 Go to map</a>
+      <h2><span id="nom">--</span></h2>
+      <div class="well">
+        <!-- mailto:contact@openwindmap.org?subject=windbird_edit -->
+         <!-- https://forum.openwindmap.org/topic/66/changer-la-description-d-un-pioupiou-->
+        <p id="desc">--</p><a id="editLink" href="mailto:contact@openwindmap.org?subject=windbird_edit" target="_blank" class="btn btn-link btn-xs" style="color: red;"><span class="glyphicon glyphicon-pencil"></span>&nbsp; Edit</a>
+      </div>
+
+      <div class="row">
+        <div id="signal-indicator-status" class="col-sm-6"></div>
+        <div class="col-sm-6" id="abo">
+          <small>
+            Network contract: <span id="contract">--</span>
+            <a id="renew-link" style="font-weight: bold; font-size: 150%; display: none;">- Click here to renew</a>
+            - <a href="renouvellement-des-abonnements">Learn more</a>
+            <!--<a href="https://forum.openwindmap.org/topic/325/renouvellement-des-abonnements">Learn more</a>-->
+            <br>
+            <span id="contract-sponsor"></span>
+          </small>
+        </div>
+      </div>
+      <div id="loading-text" class="alert alert-info">Loading...</div>
+      <!-- <div class="alert alert-danger">Votre navigateur n'est pas compatible avec la technologie HTML5</div>-->
+
+      <!--<div class="alert alert-success">
+        <p></p>
+      </div>-->
+
+    <!--  <div class="alert alert-warning" id="maurienne">
+        <p>Utilisez-vous OpenWindMap / Pioupiou / Windbird ou Meteo-Parapente pour vos activités, <u>dans la vallée de la Maurienne</u> ?</p>
+        <p><a href="https://forms.gle/L7kYc3fw7ENHAy2e9">Dites-le nous en cliquant ici.</a> C'est important</p>
+      </div -->
+
+      
+      <h3>Live wind <span id="live-wind-time">--</span></h3>
+      <div class="btn-group btn-group-xs">
+        <button type="button" onclick="changeUnit('kmh')" class="btn btn-default">km/h</button>
+        <button type="button" onclick="changeUnit('noeuds')" class="btn btn-default">knots</button>
+        <button type="button" onclick="changeUnit('ms')" class="btn btn-default">m/s</button>
+      </div>
+      <div class="row live-wind-container">
+        <div class="text-center col-sm-6">
+          <canvas id="live-wind-dir-canvas" width="120" height="120"></canvas>
+          <div id="live-wind-dir-text">---</div>
+        </div>
+        <div class="text-center col-sm-6">
+          <div id="live-wind-max">--</div>
+          <div id="live-wind-moy">--</div>
+          <div id="live-wind-min">--</div>
+        </div>
+      </div>
+      <h3>Last 2 hours</h3>
+      <div class="row archive-wind">
+        <div class="col-sm-4">
+          <canvas id="windrose-2h"></canvas>
+        </div>
+        <div class="col-sm-8">
+          <canvas id="windplot-2h"></canvas>
+        </div>
+      </div>
+      <h3>Last 48 hours</h3>
+      <div class="row archive-wind">
+      <canvas id="windplot-24h"></canvas>
+      </div>
+      <h3>Location</h3>
+      <div class="row">
+        <div class="col-sm-6">
+          <div id="map1" style="width: 100%; height: 400px; margin-bottom: 5px;"></div>
+        </div>
+        <div class="col-sm-6">
+          <div id="map2" style="width: 100%; height: 400px; margin-bottom: 5px;"></div>
+        </div>
+      </div>
+      <!--<a id="editLink" href="https://forum.openwindmap.org/topic/167/mettre-à-jour-la-position-d-une-station/1" target="_blank" class="btn btn-link btn-xs" style="color: red; float: right;"><span class="glyphicon glyphicon-pencil"></span>&nbsp; Edit position</a>-->
+      <p style="margin-top: 30px;"><a href="http://developers.pioupiou.fr/widgets/">Add a widget to my website</a></p>
+    </div>
+
+    <script src="/vendors/jquery/dist/jquery.min.js"></script>
+    <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/vendors/linkifyjs/linkify.min.js"></script>
+    <script src="/vendors/linkifyjs/linkify-string.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
+    <script>
+      function createCookie(name,value,days) {
+      try {
+        localStorage.setItem(name, value);
+      } catch (e) {
+        console.error(e);
+      }
+      if (days) {
+      var date = new Date();
+      date.setTime(date.getTime()+(days*24*60*60*1000));
+      var expires = "; expires="+date.toGMTString();
+      }
+      else var expires = "";
+      document.cookie = name+"="+value+expires+"; path=/";
+      }
+      function readCookie(name) {
+      var nameEQ = name + "=";
+      var ca = document.cookie.split(';');
+      for(var i=0;i < ca.length;i++) {
+      var c = ca[i];
+      while (c.charAt(0)==' ') c = c.substring(1,c.length);
+      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+      }
+      return null;
+      }
+      window.Pioupiou = {
+      unit: "kmh"
+      };
+      var lastUnit = readCookie("unit");
+      if (lastUnit != null) {
+      if (lastUnit == "kmh" || lastUnit == "noeuds" || lastUnit == "ms") {
+      Pioupiou.unit = lastUnit;
+      }
+      createCookie("unit", Pioupiou.unit, 120);
+      }
+      var testCanvas = document.createElement('canvas');
+      if (!(testCanvas.getContext && testCanvas.getContext('2d'))) {
+      alert("Votre navigateur n'est pas compatible avec la technologie HTML5 nécessaire");
+      }
+      delete testCanvas;
+    </script>
+    <script src="https://api.pioupiou.fr/socket.io/socket.io.js"></script>
+    <script src="/old/windarrow.js"></script>
+    <script src="/old/signalindicator.js"></script>
+    <script src="/old/windspeed.js"></script>
+    <script src="/old/reports.js"></script>
+    <script src="/old/windplot2.js"></script>
+    <script src="/old/windrose.js"></script>
+    <script>
+      var windReports = new Pioupiou.Reports();
+      var signalReports = new Pioupiou.Reports();
+      var windArrow = new Pioupiou.WindArrow("live-wind-dir", windReports);
+      var windRose = new Pioupiou.WindRose("windrose-2h", 2*3600, windReports);
+      var windPlot = new Pioupiou.WindPlot("windplot-2h", 2*3600, windReports);
+//      var windRose24 = new Pioupiou.WindRose("windrose-24h", 48*3600, windReports);
+      var windPlot24 = new Pioupiou.WindPlot("windplot-24h", 48*3600, windReports);
+      var liveWindSpeed = new Pioupiou.WindSpeed("live-wind", windReports);
+      var signalIndicator = new Pioupiou.SignalIndicator("signal-indicator", signalReports);
+      var socket = io.connect('https://api.pioupiou.fr/v1/push');
+
+      var result = /.*\/([a-zA-Z]+)-?([0-9-]+)$/.exec(location.pathname);
+      var baliseId = 0; // --------------------------------------------------------------------
+      if ((result != null) && (result[2] != null)) {
+        baliseId = result[2];
+      }
+
+      // document.getElementById("editLink").href="./"+baliseId+"/edit?fromReport";
+      document.getElementById("editLink").href="mailto:contact@openwindmap.org?cc=joel.riss@aliceadsl.fr&subject=windbird_edit_"+baliseId+"&body=windbird "+baliseId+"%0A name :%0Adescription :";
+
+      $.getJSON('https://api.pioupiou.fr/v1/live-with-meta/'+baliseId+'?contract=1', function(s) {
+        //console.log(s.data)
+        var desc = s.data.meta.description;
+        if (!desc) {
+          desc = "No description yet."
+        }
+        var name = s.data.meta.name;
+        if (name.indexOf(baliseId.toString()) == -1) {
+          name += " ("+baliseId+")";
+        }
+        document.getElementById("nom").innerHTML = name;
+
+        document.title = s.data.meta.name + " - OpenWindMap - Live wind reports for station " + baliseId;
+        document.getElementById("desc").innerHTML = desc.linkify({nl2br:true});
+
+        if (s.data.status != null) {
+          signalReports.add({
+            signal: s.data.status.snr,
+            timestamp: (new Date(s.data.status.date)).getTime()/1000,
+          });
+          signalIndicator.draw();
+        }
+
+        var eContract = document.getElementById("contract")
+        var renewLink = document.getElementById("renew-link");
+        renewLink.href="https://abo.openwindmap.org/?station_id="+baliseId
+
+      if (s.data.contract.sponsor && s.data.contract.status != "expired") {
+         var eContractSponsor = document.getElementById("contract-sponsor")
+          eContractSponsor.innerHTML = "Sponsored by "+s.data.contract.sponsor
+        }
+        if (s.data.contract.status == "valid") {          
+          if (new Date(s.data.contract.expiry).valueOf() - new Date().valueOf() > 21*24*3600*1000) {
+            eContract.innerText="Valid until " + new Date(s.data.contract.expiry).toLocaleDateString(undefined, {year: 'numeric', month: 'short', day: 'numeric' })
+            eContract.classList.add("text-success")
+            renewLink.style.display = "none";
+          } else {
+            eContract.innerText="⚠️  Valid until " + new Date(s.data.contract.expiry).toLocaleDateString(undefined, {year: 'numeric', month: 'short', day: 'numeric' })
+            eContract.classList.add("text-warning")
+            eContract.style.fontWeight = "bold"
+            renewLink.style.display = "unset";
+	  }
+        } else if (s.data.contract.status == "activable") {
+          eContract.innerText="Valid"
+          eContract.classList.add("text-success")
+          renewLink.style.display = "none";
+        } else if (s.data.contract.status == "expired") {
+          eContract.innerText="!!! Expired !!!"
+          eContract.style.fontWeight = "bold"
+          eContract.style.fontSize = "200%"
+          eContract.classList.add("text-danger")
+          renewLink.style.display = "unset";
+        } else {
+          document.getElementById("abo").style.display = "none";
+        }
+
+        var map1 = new L.map('map1', {scrollWheelZoom: false, touchZoom: false});
+        var map2 = new L.map('map2', {scrollWheelZoom: false, touchZoom: false});
+        map1.setView([s.data.location.latitude, s.data.location.longitude], 10);
+        map2.setView([s.data.location.latitude, s.data.location.longitude], 14);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://www.osm.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map1);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://www.osm.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map2);
+  //edit Damien 14/02/2026 ralentissement voir pas d'affichage avec base-layers.meteo-parapente.com attente retour Nicolas
+  /*L.tileLayer('https://{s}.base-layers.meteo-parapente.com/osm-shaded/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors | <a href="https://meteo-parapente.com">Meteo-Parapente.com</a>'
+  }).addTo(map1);
+  L.tileLayer('https://{s}.base-layers.meteo-parapente.com/osm-shaded/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors | <a href="https://meteo-parapente.com">Meteo-Parapente.com</a>'
+  }).addTo(map2);*/
+  //https://www.openstreetmap.org/?mlat=43.422507&mlon=-4.760379#map=18/43.422507/-4.760379
+        let gpslink = `GPS latitude longitude<br><a href="https://www.openstreetmap.org/?mlat=${s.data.location.latitude}&mlon=${s.data.location.longitude}#map=18/${s.data.location.latitude}/${s.data.location.longitude}" target="_blank">${s.data.location.latitude} ${s.data.location.longitude}</a>`;
+        new L.Marker([s.data.location.latitude, s.data.location.longitude])
+        .addTo(map1)
+        .bindPopup(gpslink);
+
+        new L.Marker([s.data.location.latitude, s.data.location.longitude])
+        .addTo(map2)
+        .bindPopup(gpslink);
+
+        document.getElementById("loading-text").style.display = "none";
+      });
+
+      var time = new Date(new Date().valueOf() - 48*3600*1000);
+      $.getJSON('https://api.pioupiou.fr/v1/archive/'+baliseId+'?start='+time.toISOString()+'&stop=now', function(s) {
+        if (s.data.length > 0) {
+          for (var i=s.data.length-1; i>=0; i--) {
+            windReports.add({
+              timestamp: (new Date(s.data[i][0])).getTime()/1000,
+              min: s.data[i][3],
+              moy: s.data[i][4],
+              max: s.data[i][5],
+              dir: Math.round(s.data[i][6]/22.5)
+            });
+          }
+          windArrow.draw();
+          windRose.draw();
+          windPlot.draw();
+        //  windRose24.draw();
+          windPlot24.draw();
+          liveWindSpeed.draw();
+        }
+      })
+
+      socket.on("connect", function () {
+        socket.emit("subscribe", baliseId);
+      });
+
+      socket.on("error", function (data) {
+        console.error(data);
+        document.location.reload();
+      });
+
+      socket.on("status", function (data) {
+        signalReports.add({
+          signal: data.signal,
+          timestamp: (new Date(data.date)).getTime()/1000,
+        });
+        signalIndicator.draw();
+      });
+
+      socket.on("measurement", function (data) {
+        //console.log(data);
+        windReports.add({
+          timestamp: (new Date(data.date)).getTime()/1000,
+          min: Math.round(data.wind_speed_min),
+          moy: Math.round(data.wind_speed_avg),
+          max: Math.round(data.wind_speed_max),
+          dir: Math.round(data.wind_heading/22.5)
+        });
+        windArrow.draw();
+        windRose.draw();
+        windPlot.draw();
+        //windRose24.draw();
+        windPlot24.draw();
+        liveWindSpeed.draw();
+      });
+
+      socket.on("startup", function (data) {
+        //console.log(data);
+        windReports.add({
+          timestamp: (new Date(data.date)).getTime()/1000,
+          min: Math.round(data.wind_speed),
+          moy: Math.round(data.wind_speed),
+          max: Math.round(data.wind_speed),
+          dir: Math.round(data.wind_heading/22.5)
+        });
+        windArrow.draw();
+        windRose.draw();
+        windPlot.draw();
+        //windRose24.draw();
+        windPlot24.draw();
+        liveWindSpeed.draw();
+      });
+
+      setInterval(function () {
+        windPlot.draw();
+        windRose.draw();
+        windPlot24.draw();
+        //windRose24.draw();
+      }, 1000);
+      function changeUnit (unit) {
+        Pioupiou.unit = unit;
+        createCookie("unit", unit, 120);
+        windPlot.draw();
+        windRose.draw();
+        windPlot24.draw();
+        //windRose24.draw();
+        liveWindSpeed.draw();
+      }
+    </script>
+
+  </body>
+</html>

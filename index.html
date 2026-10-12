@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>OpenWindMap - Le vent en direct</title>
+    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css">
+    <link rel="stylesheet" href="/css/map.css">
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar" class="navbar-toggle collapsed"><span class="sr-only">toogle</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a rel="home" href="/" title="Accueil" class="navbar-brand">OpenWindMap</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse navbar-right">
+          <ul class="nav navbar-nav">
+            <!--<li><a href="/">Map</a></li>-->
+            <li><a href="https://play.google.com/store/apps/details?id=org.openwindmap.app&pli=1" target="_blank"><img src="img/GetItOnGooglePlay_Badge_Web_color_French.png" height="28"></a></li>
+            <li><a href="https://windbird.com" style="color: red; font-weight: bold;">Acheter un capteur</a></li>
+            <!--<li><a href="https://forum.openwindmap.org/topic/160/comment-installer-un-capteur" style="color: red; font-weight: bold;">Installer un capteur</a></li>-->
+            <li><a href="https://forum.openwindmap.org/category/26/pioupiou">Support WindBird/Pioupiou</a></li>
+            <li><a href="http://developers.pioupiou.fr" target="_blank">Open data</a></li>
+            <li><a href="https://forum.openwindmap.org/categories">Forum</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="map-message alert alert-info">Chargement…</div>
+    <div class="map-message alert alert-danger">Oups ! Une erreur s'est produite. Essayez de recharger la page !</div>
+    <div id="map"></div>
+    <div id="pp-control">
+      <a href="#" onclick="searchByNumber()">Rechercher par numéro</a>
+      <!--<input type="checkbox" id="show-offline" />-->
+      <!--<label for="show-offline"></label>-->
+    </div>
+    <script src="/vendors/jquery/dist/jquery.min.js"></script>
+    <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
+    <script src="/js/leaflet-wind-marker.js"></script>
+    <script src="/js/map2.js"></script>
+  </body>
+</html>

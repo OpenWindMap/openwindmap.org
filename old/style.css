@@ -1,0 +1,97 @@
+.main {
+     text-align: center;
+}
+
+/*.main img {
+     padding: 10px;
+}*/
+
+.comment {
+     font-size: 10px;
+     color: #aaa;
+}
+
+.argument {
+     padding: 30px;
+}
+
+.gris {
+     background-color: #eee;
+}
+
+.newsletter-box {
+     border: 2px white solid;
+     border-radius: 4px;
+     box-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+     padding: 10px;
+}
+
+#live-wind-dir {
+font-size: 22px;
+}
+#live-wind-moy {
+font-size: 60px;
+}
+#live-wind-min {
+font-size: 25px;
+color: #428bca;
+}
+#live-wind-max {
+font-size: 25px;
+color: #d9534f;
+}
+.live-wind-container {
+     max-width: 600px;
+     margin: 20px auto 40px auto;
+}
+.live-wind-container > div {
+     margin-top: 20px;
+}
+
+h3 {
+     margin-top: 40px;
+}
+
+.widget h3 {
+  margin-top: 10px;
+} 
+/*canvas {
+ *    background-color: #eee;
+ } **/
+/*.archive-wind {
+     height: 220px;
+}
+.archive-wind > div {
+     height: 100%;
+}*/
+.archive-wind canvas {
+     width: 100%;
+     height: 220px;
+}
+#battery-indicator, #signal-indicator {
+     font-weight: bold;
+}
+#live-wind-time {
+     font-size: 15px;
+     color: #555;
+}
+#loading-text {
+     margin-top: 20px;
+}
+#preview-footer {
+     margin-top: 80px;
+}
+
+.shipping {
+     font-size: 11px;
+     margin-top: 2px;
+     margin-bottom: 2px;
+     color: #428bca;
+}
+.couleur {
+  display: block;
+  border: 1px gray solid;
+  width: 100px;
+  height: 50px;
+  margin-bottom: 5px;
+}
