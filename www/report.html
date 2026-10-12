@@ -5,10 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>OpenWindMap - Live wind reports</title>
-    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="/vendors/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/old/style.css">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css">
+    <link rel="stylesheet" href="/vendors/leaflet/leaflet.css">
   </head>
   <body>
 
@@ -123,7 +123,7 @@ IF YOU WANT TO HELP, YOU CAN EMAIL CONTACT@OPENWINDMAP.ORG
     <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="/vendors/linkifyjs/linkify.min.js"></script>
     <script src="/vendors/linkifyjs/linkify-string.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
+    <script src="/vendors/leaflet/leaflet.js"></script>
     <script>
       function createCookie(name,value,days) {
       try {
@@ -165,7 +165,7 @@ IF YOU WANT TO HELP, YOU CAN EMAIL CONTACT@OPENWINDMAP.ORG
       }
       delete testCanvas;
     </script>
-    <script src="https://api.pioupiou.fr/socket.io/socket.io.js"></script>
+    <script src="https://api.openwindmap.org/socket.io/socket.io.js"></script>
     <script src="/old/windarrow.js"></script>
     <script src="/old/signalindicator.js"></script>
     <script src="/old/windspeed.js"></script>
@@ -182,7 +182,7 @@ IF YOU WANT TO HELP, YOU CAN EMAIL CONTACT@OPENWINDMAP.ORG
       var windPlot24 = new Pioupiou.WindPlot("windplot-24h", 48*3600, windReports);
       var liveWindSpeed = new Pioupiou.WindSpeed("live-wind", windReports);
       var signalIndicator = new Pioupiou.SignalIndicator("signal-indicator", signalReports);
-      var socket = io.connect('https://api.pioupiou.fr/v1/push');
+      var socket = io.connect('https://api.openwindmap.org/v1/push');
 
       var result = /.*\/([a-zA-Z]+)-?([0-9-]+)$/.exec(location.pathname);
       var baliseId = 0; // --------------------------------------------------------------------
@@ -193,7 +193,7 @@ IF YOU WANT TO HELP, YOU CAN EMAIL CONTACT@OPENWINDMAP.ORG
       // document.getElementById("editLink").href="./"+baliseId+"/edit?fromReport";
       document.getElementById("editLink").href="mailto:contact@openwindmap.org?cc=joel.riss@aliceadsl.fr&subject=windbird_edit_"+baliseId+"&body=windbird "+baliseId+"%0A name :%0Adescription :";
 
-      $.getJSON('https://api.pioupiou.fr/v1/live-with-meta/'+baliseId+'?contract=1', function(s) {
+      $.getJSON('https://api.openwindmap.org/v1/live-with-meta/'+baliseId+'?contract=1', function(s) {
         //console.log(s.data)
         var desc = s.data.meta.description;
         if (!desc) {
@@ -280,7 +280,7 @@ IF YOU WANT TO HELP, YOU CAN EMAIL CONTACT@OPENWINDMAP.ORG
       });
 
       var time = new Date(new Date().valueOf() - 48*3600*1000);
-      $.getJSON('https://api.pioupiou.fr/v1/archive/'+baliseId+'?start='+time.toISOString()+'&stop=now', function(s) {
+      $.getJSON('https://api.openwindmap.org/v1/archive/'+baliseId+'?start='+time.toISOString()+'&stop=now', function(s) {
         if (s.data.length > 0) {
           for (var i=s.data.length-1; i>=0; i--) {
             windReports.add({

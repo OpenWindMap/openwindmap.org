@@ -84,7 +84,7 @@
   var count2 = 0;
   var count3 = 0;
 
-  $.getJSON("//api.pioupiou.fr/v1/live/all", function(stations) {
+  $.getJSON("//api.openwindmap.org/v1/live/all", function(stations) {
     var now, timeout;
     now = (new Date).getTime();
     timeout = 45;

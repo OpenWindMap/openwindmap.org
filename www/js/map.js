@@ -55,7 +55,7 @@
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors | <a href="//openstreetmap.fr">OSM FR</a>'
   }).addTo(map);
 
-  $.getJSON("//api.pioupiou.fr/v1/live/all", function(stations) {
+  $.getJSON("//api.openwindmap.org/v1/live/all", function(stations) {
     var now, timeout;
     now = (new Date).getTime();
     timeout = 45;

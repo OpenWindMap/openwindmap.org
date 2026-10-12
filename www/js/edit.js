@@ -33,7 +33,7 @@
       $('.login button').hide();
       $('.login .alert-danger').hide();
       $('.login .loader').show();
-      return $.post("https://api.pioupiou.fr/v1/login", $("form.login").serialize(), function(login) {
+      return $.post("https://api.openwindmap.org/v1/login", $("form.login").serialize(), function(login) {
         localStorage.setItem("edit-token-" + login.id, login.token);
         LoginForm.hide();
         if (Id.get() !== login.id) {
@@ -60,7 +60,7 @@
       var token;
       $('.global .loader').show();
       token = localStorage.getItem("edit-token-" + (Id.get()));
-      return $.getJSON("https://api.pioupiou.fr/v1/edit/" + (Id.get()) + "?token=" + token, function(data) {
+      return $.getJSON("https://api.openwindmap.org/v1/edit/" + (Id.get()) + "?token=" + token, function(data) {
         $('.edit input[name="id"]').val(data.id);
         $('.edit input[name="name"]').val(data.meta.name);
         $('.edit input[name="email"]').val(data.owner.email);
@@ -81,7 +81,7 @@
       $('.edit button').hide();
       $('.edit .alert').hide();
       $('.edit .loader').show();
-      return $.post("https://api.pioupiou.fr/v1/edit/" + (Id.get()), $("form.edit").serialize(), function(result) {
+      return $.post("https://api.openwindmap.org/v1/edit/" + (Id.get()), $("form.edit").serialize(), function(result) {
         if (result.ok) {
           return $('.edit .alert-success').show();
         } else {

@@ -359,7 +359,7 @@
       this._oCtx = this._oCanvas.getContext("2d");
       this._marginBottom = 30 * this._pxRatio;
       start = new Date(new Date().getTime() - this._period).toISOString();
-      return $.getJSON('//api.pioupiou.fr/v1/archive/' + Id.get() + '?start=' + start + '&stop=now', function(s) {
+      return $.getJSON('//api.openwindmap.org/v1/archive/' + Id.get() + '?start=' + start + '&stop=now', function(s) {
         Chart.set(s.data);
         setInterval(function() {
           if (!Chart._mouseover) {
@@ -566,7 +566,7 @@
     name: "Pioupiou " + Id.get()
   });
 
-  $.getJSON('//api.pioupiou.fr/v1/live-with-meta/' + Id.get(), function(s) {
+  $.getJSON('//api.openwindmap.org/v1/live-with-meta/' + Id.get(), function(s) {
     Meta.set(s.data.meta);
     Signal.set(s.data.status);
     State.set(s.data.status);

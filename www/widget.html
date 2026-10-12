@@ -116,7 +116,7 @@ IF YOU WANT TO HELP, YOU CAN EMAIL CONTACT@OPENWINDMAP.ORG
       }
       delete testCanvas;
     </script>
-    <script src="https://api.pioupiou.fr/socket.io/socket.io.js"></script>
+    <script src="https://api.openwindmap.org/socket.io/socket.io.js"></script>
     <script src="/old/windarrow.js"></script>
     <script src="/old/signalindicator.js"></script>
     <script src="/old/windspeed.js"></script>
@@ -149,7 +149,7 @@ IF YOU WANT TO HELP, YOU CAN EMAIL CONTACT@OPENWINDMAP.ORG
       var windPlot24 = widget24h ? new Pioupiou.WindPlot("windplot-24h", 48*3600, windReports) : dummy;
       var liveWindSpeed = widgetLive ? new Pioupiou.WindSpeed("live-wind", windReports) : dummy;
       var signalIndicator = new Pioupiou.SignalIndicator("signal-indicator", signalReports, true);
-      var socket = io.connect('https://api.pioupiou.fr/v1/push');
+      var socket = io.connect('https://api.openwindmap.org/v1/push');
 
       var result = /.*\/(PP|pp|BA|ba|MW|mw|A|a|WB|wb|OW|ow)([0-9-]+)$/.exec(location.pathname);
       var baliseId = 0; // --------------------------------------------------------------------
@@ -159,7 +159,7 @@ IF YOU WANT TO HELP, YOU CAN EMAIL CONTACT@OPENWINDMAP.ORG
 
       // document.getElementById("editLink").href="./"+baliseId+"/edit?fromReport";
 
-      $.getJSON('https://api.pioupiou.fr/v1/live/'+baliseId+'?contract=1', function(s) {
+      $.getJSON('https://api.openwindmap.org/v1/live/'+baliseId+'?contract=1', function(s) {
         //console.log(s.data)
         var name = s.data.meta.name;
         if (name.indexOf(baliseId.toString()) == -1) {
@@ -193,7 +193,7 @@ IF YOU WANT TO HELP, YOU CAN EMAIL CONTACT@OPENWINDMAP.ORG
       });
 
       var time = new Date(new Date().valueOf() - 48*3600*1000);
-      $.getJSON('https://api.pioupiou.fr/v1/archive/'+baliseId+'?start='+time.toISOString()+'&stop=now', function(s) {
+      $.getJSON('https://api.openwindmap.org/v1/archive/'+baliseId+'?start='+time.toISOString()+'&stop=now', function(s) {
         if (s.data.length > 0) {
           for (var i=s.data.length-1; i>=0; i--) {
             windReports.add({

@@ -11,7 +11,7 @@
     });
   };
 
-  url = "https://api.pioupiou.fr/v1/shop/invoice" + document.location.search;
+  url = "https://api.openwindmap.org/v1/shop/invoice" + document.location.search;
 
   $.getJSON(url, function(order) {
     var paymentMethod, taxIndex, totalTaxExc, totalTaxInc;

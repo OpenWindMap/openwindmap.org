@@ -14,7 +14,7 @@
       email: email,
       lang: NewsLang.lang
     };
-    return $.post("https://api.pioupiou.fr/v1/shop/newsletter", data, (function(response, textStatus) {
+    return $.post("https://api.openwindmap.org/v1/shop/newsletter", data, (function(response, textStatus) {
       if (response.error) {
         alert(NewsLang.errorRetry);
         return ga("send", "event", "Newsletter", "ErrorForm");

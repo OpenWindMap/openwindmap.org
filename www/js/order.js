@@ -155,7 +155,7 @@
     emailValid = true;
     smtpValid = true;
     email = $("#contact_email").val();
-    url = "https://api.pioupiou.fr/v1/shop/email-check?email=" + email;
+    url = "https://api.openwindmap.org/v1/shop/email-check?email=" + email;
     return $.getJSON(url, function(response) {
       if (!response.format_valid) {
         $("#contact_email").parent().addClass("has-error");
@@ -203,7 +203,7 @@
       $("#invoicing .loading").show();
       $("#invoicing .submit").hide();
       order.vatNumberValid = true;
-      url = "https://api.pioupiou.fr/v1/shop/vat-check?vat_number=" + order.invoice_vat;
+      url = "https://api.openwindmap.org/v1/shop/vat-check?vat_number=" + order.invoice_vat;
       return $.getJSON(url, function(response) {
         if (!response.valid) {
           $("#invoice_vat").parent().addClass("has-error");
@@ -238,7 +238,7 @@
   });
 
   createOrder = function(order) {
-    return $.post("https://api.pioupiou.fr/v1/shop/order/create", order, (function(data, textStatus) {
+    return $.post("https://api.openwindmap.org/v1/shop/order/create", order, (function(data, textStatus) {
       if (data.success) {
         $("#cardPayment input").val("");
         order.id = data.order_id;
@@ -427,7 +427,7 @@
       email: email,
       lang: Lang.lang
     };
-    return $.post("https://api.pioupiou.fr/v1/shop/newsletter", data, (function(response, textStatus) {
+    return $.post("https://api.openwindmap.org/v1/shop/newsletter", data, (function(response, textStatus) {
       console.log(response);
       if (response.error) {
         alert(Lang.errorRetry);
